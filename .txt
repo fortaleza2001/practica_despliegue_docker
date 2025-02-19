@@ -1,0 +1,8 @@
+comandos : 
+
+            -Eliminar todos los contenedores volumenes y redes = sudo docker-compose down --volumes --remove-orphans
+            -Crear y desplegar contenedores = sudo docker-compose up --build -d
+            -Como puedo ver todos los procesos = sudo docker ps
+            -como detengo los contenedores = sudo docker-compose down
+            -como detengo y reinicio los contenedores = sudo docker-compose restart
+            -activar contenedores = sudo docker-compose up -d
