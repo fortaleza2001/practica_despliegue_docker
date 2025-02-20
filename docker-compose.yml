@@ -13,28 +13,30 @@ services:
     ports:
       - "8080:80"
     environment:
-      WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_HOST: db
       WORDPRESS_DB_NAME: bitnami_wordpress
       WORDPRESS_DB_USER: bn_wordpress
       WORDPRESS_DB_PASSWORD: bitnami
-      WORDPRESS_BLOG_NAME: "User's blog"
-      WORDPRESS_USERNAME: user
-      WORDPRESS_PASSWORD: bitnami
-      WORDPRESS_EMAIL: user@example.com
+      WORDPRESS_BLOG_NAME: "Juan blog"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     restart: always
     networks:
       - front
       - back
 
   db:
-    image: mariadb
+    image: mysql:latest
     environment:
       MYSQL_ROOT_PASSWORD: bitnami
       MYSQL_DATABASE: bitnami_wordpress
       MYSQL_USER: bn_wordpress
       MYSQL_PASSWORD: bitnami
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 5
     restart: always
     networks:
       - back
@@ -44,7 +46,7 @@ services:
     ports:
       - "8081:80"
     environment:
-      PMA_HOST: mariadb
+      PMA_HOST: db
       MYSQL_ROOT_PASSWORD: bitnami
     depends_on:
       - db
